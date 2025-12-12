@@ -1,16 +1,20 @@
-import asyncio
+from pydantic import BaseModel
+from datetime import datetime
 
-sema = asyncio.Semaphore(2)
+class User(BaseModel):
+    id: int
+    name: str = "John Doe"
+    signup_ts: datetime | None = None
+    friends: list[int] = []
 
-async def test():
-    async with sema:
-        print('0%')
-        await asyncio.sleep(5)
-        print('100%')
 
-async def main():
-    async with asyncio.TaskGroup() as tg:
-        for _ in range(4):
-            tg.create_task(test())
-
-asyncio.run(main())
+external_data = {
+    "id": "123",
+    "signup_ts": "2017-06-01 12:22",
+    "friends": [1, "2", b"3"],
+}
+user = User(**external_data)
+print(user)
+# > User id=123 name='John Doe' signup_ts=datetime.datetime(2017, 6, 1, 12, 22) friends=[1, 2, 3]
+print(user.id)
+# > 123
