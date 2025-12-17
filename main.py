@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import uvicorn
 
 app = FastAPI()
-
+#hotfix--------------------------------------------
 # --- Хранилище состояния ---
 system_state = {
     "temperature": 0.0,
